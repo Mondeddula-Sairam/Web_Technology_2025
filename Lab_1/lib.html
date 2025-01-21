@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="libraryApp">
+<head>
+    <b><marquee style="color: blue; font-size: 20px;">Welcome To Library</marquee></b>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body { background-color: #f0f8ff; font-family: Arial, sans-serif; }
+        table { width: 60%; border-collapse: collapse; margin: 20px 0; background-color: #fff; }
+        th, td { border: 1px solid black; padding: 10px; text-align: left; font-weight: bold; }
+        th { background-color: #ff6347; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        input[type="number"], input[type="text"] { padding: 5px; border-radius: 5px; border: 1px solid #555; }
+        button { background-color: #008CBA; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #005f73; }
+        h2 { color: #4CAF50; }
+        h3 { color: #ff4500; }
+    </style>
+</head>
+<body ng-controller="LibraryController">
+    <h2>Library Book Categories</h2>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Book Count</th>
+        </tr>
+        <tr ng-repeat="book in library">
+            <td style="color: #8a2be2;">{{ book.category }}</td>
+            <td><input type="number" ng-model="book.count" min="0" style="background-color: #ffff99;"></td>
+        </tr>
+    </table>
+    
+    <h3>Add New Category</h3>
+    <label style="color: #2e8b57;">Category Name:</label>
+    <input type="text" ng-model="newCategory" style="background-color: #e0ffff;">
+    <label style="color: #2e8b57;">Book Count:</label>
+    <input type="number" ng-model="newCount" min="0" style="background-color: #e0ffff;">
+    <button ng-click="addCategory()">Add Category</button>
+    <p style="color: red;" ng-if="errorMessage">{{ errorMessage }}</p>
+
+    <script>
+        var app = angular.module('libraryApp', []);
+        
+        app.controller('LibraryController', function($scope) {
+            $scope.library = [
+                {  category: 'Fiction', count: 120 },
+                { category: 'Non-Fiction', count: 80 },
+                { category: 'Science', count: 150 },
+                { category: 'Mathematics', count: 70 }
+            ];
+            
+            $scope.addCategory = function() {
+                if (!$scope.newCategory || !$scope.newCount) {
+                    $scope.errorMessage = "Both fields are required.";
+                    return;
+                }
+                
+                var exists = $scope.library.some(function(book) {
+                    return book.category.toLowerCase() === $scope.newCategory.toLowerCase();
+                });
+                
+                if (exists) {
+                    $scope.errorMessage = "Category already exists!";
+                } else {
+                    $scope.library.push({ category: $scope.newCategory, count: parseInt($scope.newCount) });
+                    $scope.newCategory = "";
+                    $scope.newCount = "";
+                    $scope.errorMessage = "";
+                }
+            };
+        });
+    </script>
+</body>
+</html>

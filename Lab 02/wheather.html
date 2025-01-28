@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="WeatherApp">
+<head>
+    <title>Weather Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="WeatherController">
+    <h1>Weather Dashboard</h1>
+    <input type="text" ng-model="city" placeholder="Enter city name">
+    <button ng-click="getWeather()">Get Weather</button>
+
+    <div ng-if="weatherData">
+        <h2>Weather in {{ weatherData.name }}</h2>
+        <p>Temperature: {{ weatherData.main.temp }}°C</p>
+        <p>Humidity: {{ weatherData.main.humidity }}%</p>
+        <p>Condition: {{ weatherData.weather[0].description }}</p>
+    </div>
+    <div ng-if="errorMessage">
+        <p style="color: red;">{{ errorMessage }}</p>
+    </div>
+</div>
+
+<script>
+    angular.module('WeatherApp', [])
+    .controller('WeatherController', function($scope, $http) {
+        $scope.city = '';
+        $scope.weatherData = null;
+        $scope.errorMessage = null;
+
+        $scope.getWeather = function() {
+            const API_KEY = 'de1590504058a5437dab4b72a894c9f3'; // Your API key
+            const url = https://api.openweathermap.org/data/2.5/weather?q=${$scope.city}&appid=${API_KEY}&units=metric;
+
+            if (!$scope.city) {
+                $scope.errorMessage = 'Please enter a city name.';
+                return;
+            }
+
+            $http.get(url)
+                .then(response => {
+                    $scope.weatherData = response.data;
+                    $scope.errorMessage = null;
+                })
+                .catch(error => {
+                    $scope.weatherData = null;
+                    if (error.status === 404) {
+                        $scope.errorMessage = 'City not found. Please check the city name.';
+                    } else if (error.status === 401) {
+                        $scope.errorMessage = 'Invalid API key. Please verify your API key.';
+                    } else {
+                        $scope.errorMessage = 'Unable to fetch weather data. Please try again later.';
+                    }
+                    console.error('Error Details:', error);
+                });
+        };
+    });
+</script>
+
+</body>
+</html>

@@ -8,3 +8,8 @@
 
 [Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab_1/movie.html)
 
+
+#Weather Dashboard 
+
+[Code](
+

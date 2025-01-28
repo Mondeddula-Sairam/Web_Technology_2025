@@ -1,5 +1,5 @@
 # Web_Technology_2025
-# LibraryManagement
+# Lab 01 LibraryManagement
 
 
 [Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab_1/lib.html)
@@ -9,7 +9,15 @@
 [Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab_1/movie.html)
 
 
-# Weather Dashboard 
+# Lab 02 Weather Dashboard 
 
 [Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab%2002/wheather.html)
+
+
+# Personal finance tracker
+
+[code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab%2002/finance.html)
+
+
+
 

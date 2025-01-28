@@ -9,7 +9,7 @@
 [Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab_1/movie.html)
 
 
-#Weather Dashboard 
+# Weather Dashboard 
 
 [Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab%2002/wheather.html)
 

@@ -19,5 +19,12 @@
 [code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab%2002/finance.html)
 
 
+# Student Management System
+
+[Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab-2.2/Student%20Management%20System.html)
+
+
+
+
 
 

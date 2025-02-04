@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="studentApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+
+    <script>
+        var app = angular.module("studentApp", ["ngRoute"]);
+        
+        // Route configuration
+        app.config(function($routeProvider) {
+            $routeProvider
+                .when("/home", { 
+                    templateUrl: "home.html",
+                    controller: "studentController"
+                })
+                .when("/students", { 
+                    templateUrl: "students.html",
+                    controller: "studentController"  
+                })
+                .when("/add-student", { 
+                    templateUrl: "add-student.html",
+                    controller: "studentController"  
+                })
+                .when("/edit-student/:index", { 
+                    templateUrl: "edit-student.html",
+                    controller: "studentController"  
+                })
+                .otherwise({ templateUrl: "404.html" });
+        });
+
+        // Service for managing students
+        app.service("studentService", function() {
+            var students = [
+                { name: "Rithwik", age: 20, course: "ECE" },
+                { name: "Jeshwnth", age: 22, course: "EEE" },
+                { name: "Rohith", age: 19, course: "MECH" }
+            ];
+            
+            // Get all students
+            this.getStudents = function() {
+                return students;
+            };
+
+            // Add a new student
+            this.addStudent = function(student) {
+                var duplicate = students.some(function(existingStudent) {
+                    return existingStudent.name.toLowerCase() === student.name.toLowerCase();
+                });
+
+                if (duplicate) {
+                    return false;
+                } else {
+                    students.push(student);
+                    return true;
+                }
+            };
+
+            // Update a student
+            this.updateStudent = function(index, student) {
+                students[index] = student;
+            };
+
+            this.deleteStudent = function(index) {
+                students.splice(index, 1);
+            };
+        });
+
+        app.controller("studentController", function($scope, $routeParams, studentService) {
+            $scope.students = studentService.getStudents();
+            $scope.errorMessage = "";
+
+            // Add a new student
+            $scope.addStudent = function() {
+                if ($scope.newStudent) {
+                    var success = studentService.addStudent($scope.newStudent);
+                    
+                    if (success) {
+                        $scope.newStudent = {};  
+                        $scope.errorMessage = "";
+                    } else {
+                        $scope.errorMessage = "Student with this name already exists!";
+                    }
+                }
+            };
+
+            // Edit student logic
+            if ($routeParams.index !== undefined) {
+                var index = $routeParams.index;
+                $scope.studentToEdit = angular.copy($scope.students[index]);
+                $scope.indexToEdit = index;
+            }
+
+            // Update student details
+            $scope.updateStudent = function() {
+                studentService.updateStudent($scope.indexToEdit, $scope.studentToEdit);
+            };
+
+            // Delete student
+            $scope.deleteStudent = function(index) {
+                studentService.deleteStudent(index);
+            };
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        h1 {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            margin: 0;
+        }
+
+        nav {
+            background: #0056b3;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background: #003d80;
+            color: #fff;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 30px auto;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        .delete-button {
+            background: #dc3545;
+            margin-left: 15px;
+        }
+
+        .delete-button:hover {
+            background: #c82333;
+        }
+        .edit-button {
+            background: #ffc107;
+            margin-left: 15px;
+        }
+
+        .edit-button:hover {
+            background: #e0a800;
+        }
+    </style>
+</head>
+<body ng-class="pageClass">
+
+    <h1>Student Management System</h1>
+
+    <nav>
+        <a href="#!/home">🏠 Home</a>
+        <a href="#!/students">📋 Student List</a>
+        <a href="#!/add-student">➕ Add Student</a>
+    </nav>
+
+    <div ng-view class="container"></div>
+
+
+    <script type="text/ng-template" id="home.html">
+        <h2>Welcome to the Student Management System</h2>
+        <p>Use the navigation above to manage students.</p>
+    </script>
+
+    <script type="text/ng-template" id="students.html">
+        <h2>Student List</h2>
+        <ul style="list-style: none; padding: 0;">
+            <li ng-repeat="student in students" style="margin-bottom: 15px;">
+                👨‍🎓 <strong>{{ student.name }}</strong> (Age: {{ student.age }}, Course: {{ student.course }}) 
+                <button class="delete-button" ng-click="deleteStudent($index)">🗑 Delete</button>
+                <a href="#!/edit-student/{{ $index }}"><button class="edit-button">✏ Edit</button></a>
+            </li>
+        </ul>
+    </script>
+
+    <script type="text/ng-template" id="add-student.html">
+        <h2>Add Student</h2>
+        <form ng-submit="addStudent()">
+            <input type="text" ng-model="newStudent.name" placeholder="Enter student name" required>
+            <input type="number" ng-model="newStudent.age" placeholder="Enter student age" required>
+            <input type="text" ng-model="newStudent.course" placeholder="Enter student course" required>
+            <button type="submit">➕ Add Student</button>
+            <p style="color: red;" ng-if="errorMessage">{{ errorMessage }}</p>
+        </form>
+    </script>
+
+    <script type="text/ng-template" id="edit-student.html">
+        <h2>Edit Student</h2>
+        <form ng-submit="updateStudent()">
+            <input type="text" ng-model="studentToEdit.name" placeholder="Enter student name" required>
+            <input type="number" ng-model="studentToEdit.age" placeholder="Enter student age" required>
+            <input type="text" ng-model="studentToEdit.course" placeholder="Enter student course" required>
+            <button type="submit">📝 Update Student</button>
+        </form>
+    </script>
+
+    <script type="text/ng-template" id="404.html">
+        <h2>404 - Page Not Found</h2>
+        <p>The page you are looking for does not exist.</p>
+    </script>
+
+</body>
+</html>

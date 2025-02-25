@@ -26,7 +26,7 @@
 
 # Lab-5.1 College Management System.
 
-.[Code].(https://github.com/Mondeddula-Sairam/Web_Technology_2025/tree/main/Lab-5.1)
+[Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/tree/main/Lab-5.1)
 
 
 

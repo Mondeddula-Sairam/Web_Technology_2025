@@ -24,6 +24,12 @@
 [Code](https://github.com/Mondeddula-Sairam/Web_Technology_2025/blob/main/Lab-2.2/Student%20Management%20System.html)
 
 
+# Lab-5.1 College Management System.
+
+.[Code].(https://github.com/Mondeddula-Sairam/Web_Technology_2025/tree/main/Lab-5.1)
+
+
+
 
 
 
